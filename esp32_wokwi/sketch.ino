@@ -110,8 +110,12 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
 
   int error_count = -1;
 
-  // Try parsing as JSON object
+  // Try parsing as JSON object (Compatible with ArduinoJson v6 & v7)
+#if ARDUINOJSON_VERSION_MAJOR >= 7
+  JsonDocument doc;
+#else
   StaticJsonDocument<256> doc;
+#endif
   DeserializationError err = deserializeJson(doc, message);
 
   if (!err && doc.containsKey("error_count")) {
