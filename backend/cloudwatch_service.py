@@ -35,6 +35,8 @@ class CloudWatchService:
 
     def has_credentials(self) -> bool:
         """Checks if AWS credentials exist without hanging on network metadata."""
+        from config import reload_env
+        reload_env()
         if settings.AWS_ACCESS_KEY_ID and settings.AWS_SECRET_ACCESS_KEY:
             return True
         try:
@@ -45,8 +47,10 @@ class CloudWatchService:
 
     def _get_boto3_kwargs(self) -> Dict[str, Any]:
         """Build credentials kwargs for boto3 client."""
+        from config import reload_env
+        reload_env()
         kwargs: Dict[str, Any] = {
-            "region_name": self.region,
+            "region_name": settings.AWS_REGION,
             "config": BOTO_CONFIG
         }
         if settings.AWS_ACCESS_KEY_ID and settings.AWS_SECRET_ACCESS_KEY:

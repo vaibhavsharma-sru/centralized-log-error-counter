@@ -2,30 +2,63 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load .env file from the backend folder
 BASE_DIR = Path(__file__).resolve().parent
 ENV_PATH = BASE_DIR / ".env"
-load_dotenv(dotenv_path=ENV_PATH)
+
+def reload_env():
+    """Reloads .env dynamically so credential updates take effect immediately."""
+    load_dotenv(dotenv_path=ENV_PATH, override=True)
+
+reload_env()
 
 class Settings:
-    # AWS Configuration
-    AWS_REGION: str = os.getenv("AWS_REGION", os.getenv("AWS_DEFAULT_REGION", "us-east-1"))
-    AWS_ACCESS_KEY_ID: str | None = os.getenv("AWS_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY: str | None = os.getenv("AWS_SECRET_ACCESS_KEY")
-    AWS_SESSION_TOKEN: str | None = os.getenv("AWS_SESSION_TOKEN")  # Common in AWS Academy / Learner Labs
+    @property
+    def AWS_REGION(self) -> str:
+        return os.getenv("AWS_REGION", os.getenv("AWS_DEFAULT_REGION", "us-east-1"))
 
-    # CloudWatch Logs Configuration
-    LOG_GROUP_NAME: str = os.getenv("LOG_GROUP_NAME", "/centralized-log-error-counter")
-    LOG_STREAM_NAME: str = os.getenv("LOG_STREAM_NAME", "demo-stream")
+    @property
+    def AWS_ACCESS_KEY_ID(self) -> str | None:
+        val = os.getenv("AWS_ACCESS_KEY_ID")
+        return val.strip() if val else None
 
-    # MQTT Configuration
-    MQTT_BROKER: str = os.getenv("MQTT_BROKER", "broker.hivemq.com")
-    MQTT_PORT: int = int(os.getenv("MQTT_PORT", 1883))
-    MQTT_TOPIC: str = os.getenv("MQTT_TOPIC", "centralized/logs/error-count")
-    MQTT_CLIENT_ID: str = os.getenv("MQTT_CLIENT_ID", f"cloudwatch-backend-{os.getpid()}")
+    @property
+    def AWS_SECRET_ACCESS_KEY(self) -> str | None:
+        val = os.getenv("AWS_SECRET_ACCESS_KEY")
+        return val.strip() if val else None
 
-    # Server Configuration
-    BACKEND_PORT: int = int(os.getenv("BACKEND_PORT", 8000))
+    @property
+    def AWS_SESSION_TOKEN(self) -> str | None:
+        val = os.getenv("AWS_SESSION_TOKEN")
+        return val.strip() if val else None
+
+    @property
+    def LOG_GROUP_NAME(self) -> str:
+        return os.getenv("LOG_GROUP_NAME", "/centralized-log-error-counter")
+
+    @property
+    def LOG_STREAM_NAME(self) -> str:
+        return os.getenv("LOG_STREAM_NAME", "demo-stream")
+
+    @property
+    def MQTT_BROKER(self) -> str:
+        return os.getenv("MQTT_BROKER", "broker.hivemq.com")
+
+    @property
+    def MQTT_PORT(self) -> int:
+        return int(os.getenv("MQTT_PORT", 1883))
+
+    @property
+    def MQTT_TOPIC(self) -> str:
+        return os.getenv("MQTT_TOPIC", "centralized/logs/error-count")
+
+    @property
+    def MQTT_CLIENT_ID(self) -> str:
+        return os.getenv("MQTT_CLIENT_ID", f"cloudwatch-backend-{os.getpid()}")
+
+    @property
+    def BACKEND_PORT(self) -> int:
+        return int(os.getenv("BACKEND_PORT", 8000))
+
     CORS_ORIGINS: list[str] = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
