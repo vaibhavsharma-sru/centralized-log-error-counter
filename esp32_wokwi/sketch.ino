@@ -59,15 +59,13 @@ void setup() {
   pinMode(ALERT_LED_PIN, OUTPUT);
   digitalWrite(ALERT_LED_PIN, LOW);
 
-  // Initialize TM1637 Display
-  display.setBrightness(0x0f); // Maximum brightness
+  // Initialize TM1637 Display (brightness 0-7)
+  display.setBrightness(7);
   display.clear();
-  display.showNumberDec(0, true); // Display "0000" initially
+  display.showNumberDec(0, true, 4, 0); // Explicitly display 0000 across all 4 digits
 
-  // Connect to WiFi
   setup_wifi();
 
-  // Configure MQTT
   client.setServer(mqtt_broker, mqtt_port);
   client.setCallback(mqtt_callback);
 }
@@ -131,7 +129,7 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
     Serial.println(current_error_count);
 
     // Update TM1637 display with 4-digit leading zeros
-    display.showNumberDec(current_error_count, true);
+    display.showNumberDec(current_error_count, true, 4, 0);
 
     // Update alert status
     if (current_error_count > 0) {

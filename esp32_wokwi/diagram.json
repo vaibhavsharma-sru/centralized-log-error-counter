@@ -6,8 +6,8 @@
     { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": 0, "left": 0, "attrs": {} },
     {
       "type": "wokwi-tm1637-7segment",
-      "id": "tm1",
-      "top": -80,
+      "id": "sevseg1",
+      "top": -120,
       "left": 180,
       "attrs": { "color": "red" }
     },
@@ -29,10 +29,10 @@
   "connections": [
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
     [ "esp:RX", "$serialMonitor:TX", "", [] ],
-    [ "esp:GND.1", "tm1:GND", "black", [ "v-15", "h110" ] ],
-    [ "esp:3V3", "tm1:VCC", "red", [ "v-30", "h140" ] ],
-    [ "esp:22", "tm1:CLK", "orange", [ "v-45", "h90" ] ],
-    [ "esp:23", "tm1:DIO", "green", [ "v-60", "h60" ] ],
+    [ "sevseg1:CLK", "esp:22", "orange", [ "v-30", "h-120" ] ],
+    [ "sevseg1:DIO", "esp:23", "green", [ "v-40", "h-140" ] ],
+    [ "sevseg1:VCC", "esp:5V", "red", [ "v-50", "h-160" ] ],
+    [ "sevseg1:GND", "esp:GND.1", "black", [ "v-60", "h-180" ] ],
     [ "esp:2", "r1:1", "blue", [ "h20", "v0" ] ],
     [ "r1:2", "led1:A", "blue", [ "v10" ] ],
     [ "esp:GND.2", "led1:C", "black", [ "v40", "h40" ] ]
