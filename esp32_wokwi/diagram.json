@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "author": "Cloud Engineering Team",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    {
+      "type": "wokwi-tm1637-7segment",
+      "id": "tm1",
+      "top": -80,
+      "left": 160,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": 120,
+      "left": 180,
+      "attrs": { "color": "red", "label": "ERROR ALERT" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 90,
+      "left": 180,
+      "attrs": { "value": "220" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:GND.1", "tm1:GND", "black", [ "v-15", "h110" ] ],
+    [ "esp:3V3", "tm1:VCC", "red", [ "v-30", "h140" ] ],
+    [ "esp:22", "tm1:CLK", "orange", [ "v-45", "h90" ] ],
+    [ "esp:23", "tm1:DIO", "green", [ "v-60", "h60" ] ],
+    [ "esp:2", "r1:1", "blue", [ "h20", "v0" ] ],
+    [ "r1:2", "led1:A", "blue", [ "v10" ] ],
+    [ "esp:GND.2", "led1:C", "black", [ "v40", "h40" ] ]
+  ],
+  "dependencies": {
+    "TM1637": "TM1637Display",
+    "PubSubClient": "PubSubClient",
+    "ArduinoJson": "ArduinoJson"
+  }
+}
